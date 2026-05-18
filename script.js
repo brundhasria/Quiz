@@ -316,7 +316,8 @@ function startQuiz(category) {
 
   document.getElementById("quiz-box")
     .classList.remove("hidden");
-
+  document.getElementById("quiz-title").innerText =
+  category.toUpperCase() + " Quiz";
   loadQuestion();
 }
 
@@ -345,7 +346,7 @@ function loadQuestion() {
 
   // PROGRESS BAR
   const progress =
-    (currentQuestion / currentQuiz.length) * 100;
+    ( (currentQuestion+1)/ currentQuiz.length) * 100;
 
   const progressBar =
     document.getElementById("progress-bar");
@@ -508,6 +509,12 @@ function saveQuestion() {
   const answer =
     document.getElementById("correct-answer").value;
 
+  const options = [option1, option2, option3, option4];
+
+    if (!options.includes(answer)) {
+      alert("Correct answer must match an option");
+      return;
+    }
   const newQuestion = {
     question: question,
     options: [option1, option2, option3, option4],
@@ -590,32 +597,35 @@ const params = new URLSearchParams(window.location.search);
 
 if (params.has("quiz")) {
 
-  const data = JSON.parse(
-    decodeURIComponent(params.get("quiz"))
-  );
+  try {
 
-  // LOAD SHARED QUESTIONS
-  currentQuiz = data.questions;
+    const data = JSON.parse(
+      decodeURIComponent(params.get("quiz"))
+    );
 
-  // LOAD TITLE
-  document.getElementById("quiz-title").innerText =
-    data.title || "Shared Quiz";
+    currentQuiz = data.questions;
 
-  // RESET GAME
-  currentQuestion = 0;
-  score = 0;
+    document.getElementById("quiz-title").innerText =
+      data.title || "Shared Quiz";
 
-  // HIDE OTHER SCREENS
-  hideAllScreens();
+    currentQuestion = 0;
+    score = 0;
 
-  // SHOW QUIZ SCREEN
-  document.getElementById("quiz-box").style.display = "block";
+    hideAllScreens();
 
-  // START QUIZ
-  loadQuestion();
+    document.getElementById("quiz-box")
+      .classList.remove("hidden");
+
+    loadQuestion();
+
+  } catch {
+
+    alert("Invalid quiz link");
+
+    goHome();
+  }
 
 } else {
 
-  // NORMAL HOME PAGE
   goHome();
 }
