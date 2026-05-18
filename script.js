@@ -584,34 +584,38 @@ function generateShareLink() {
 
   alert("Quiz link copied!");
 }
+// ================= SHARE QUIZ SYSTEM =================
+
 const params = new URLSearchParams(window.location.search);
 
 if (params.has("quiz")) {
 
-  const data =
-    JSON.parse(
-      decodeURIComponent(params.get("quiz"))
-    );
+  const data = JSON.parse(
+    decodeURIComponent(params.get("quiz"))
+  );
 
-  customQuiz = data.questions;
+  // LOAD SHARED QUESTIONS
+  currentQuiz = data.questions;
 
+  // LOAD TITLE
   document.getElementById("quiz-title").innerText =
-    data.title;
+    data.title || "Shared Quiz";
 
-  currentQuiz = customQuiz;
-
-  startQuizFromShared();
-}
-
-function startQuizFromShared() {
-
+  // RESET GAME
   currentQuestion = 0;
   score = 0;
 
+  // HIDE OTHER SCREENS
   hideAllScreens();
 
-  document.getElementById("quiz-box")
-    .classList.remove("hidden");
+  // SHOW QUIZ SCREEN
+  document.getElementById("quiz-box").style.display = "block";
 
+  // START QUIZ
   loadQuestion();
+
+} else {
+
+  // NORMAL HOME PAGE
+  goHome();
 }
