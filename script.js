@@ -570,7 +570,9 @@ function playCustomQuiz() {
 // SHOW CATEGORY PAGE FIRST
 window.onload = function () {
 
-  goHome();
+  if (!params.has("quiz")) {
+    goHome();
+  }
 };
 function generateShareLink() {
 
