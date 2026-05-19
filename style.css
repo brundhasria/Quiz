@@ -164,3 +164,13 @@ input {
   border: 1px solid #ccc;
   font-size: 14px;
 }
+.screen {
+  min-height: 100vh;   /* full viewport */
+  width: 100%;
+}
+
+.hidden {
+  display: none;
+}
+
+
